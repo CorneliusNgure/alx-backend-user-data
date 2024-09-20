@@ -3,7 +3,7 @@
 Module for authentication
 """
 from flask import request
-from typing import List, TypeVar
+from typing import List, TypeVar, Optional
 
 User = TypeVar('User')
 
@@ -37,7 +37,8 @@ class Auth:
 
         return True
 
-    def authorization_header(self, request=None) -> str:
+
+    def authorization_header(self, request=None) -> Optional[str]:
         """
         Retrieves the Authorization header from the request object.
 
@@ -45,9 +46,14 @@ class Auth:
             request: The Flask request object.
 
         Returns:
-            str: None.
+            str: The value of the Authorization header,
+                or None if the header is not present, 
+                or request is None.
         """
-        return None
+        if request is None:
+            return None
+        return request.headers.get('Authorization', None)
+
 
     def current_user(self, request=None) -> TypeVar('User'):
         """
