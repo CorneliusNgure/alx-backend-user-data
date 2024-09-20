@@ -64,3 +64,8 @@ class Auth:
             User: None.
         """
         return None
+
+
+class BasicAuth(Auth):
+    """Child class of Auth class"""
+    pass
