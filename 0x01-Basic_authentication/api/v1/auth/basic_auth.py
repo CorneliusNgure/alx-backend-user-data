@@ -112,19 +112,27 @@ class BasicAuth(Auth):
             User instance if found, otherwise None.
         """
         # Get the authorization header from the request
-        auth_header = self.auth_header(request)
+        auth_header = self.authorization_header(request)
+        if auth_header is None:
+            return None
 
         # Extract the base64 part of the authorization header
-        base64_auth_header = self.extract_base64_auth_header(
+        base64_auth_header = self.extract_base64_authorization_header(
             auth_header)
+        if base64_auth_header is None:
+            return None
 
         # Decode the base64 authorization header
-        decoded_base64_auth_header = self.decode_base64_auth_header(
+        decoded_base64_auth_header = self.decode_base64_authorization_header(
             base64_auth_header)
+        if decoded_base64_auth_header is None:
+            return None
 
         # Extract user credentials from the decoded header
         user_email, user_pwd = self.extract_user_credentials(
             decoded_base64_auth_header)
+        if user_email is None or user_pwd is None:
+            return None
 
         # Retrieve the user object from the credentials
         return self.user_object_from_credentials(user_email, user_pwd)
