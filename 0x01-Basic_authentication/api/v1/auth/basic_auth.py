@@ -89,12 +89,12 @@ class BasicAuth(Auth):
             return None
 
         # Search for user by email
-        user = User.search({'email': user_email})
-        if not user or len(user) == 0:
-            return None  # No user found
+        user_list = User.search({'email': user_email})
+        if not user_list or len(user_list) == 0:
+            return None  # No user found with the provided mail
 
         # User is expected to be in a list, get the first instance
-        user = user[0]
+        user = user_list[0]
 
         if not user.is_valid_password(user_pwd):
             return None
