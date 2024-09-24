@@ -84,10 +84,8 @@ class BasicAuth(Auth):
         Returns:
             User instance if the credentials are valid, otherwise None.
         """
-        # Check if email and password are valid
-        if not user_email or not isinstance(user_email, str):
-            return None
-        if not user_pwd or not isinstance(user_pwd, str):
+        # Check if email and password are valid strings
+        if not isinstance(user_email, str) or not isinstance(user_pwd, str):
             return None
 
         # Search for user by email
