@@ -102,26 +102,29 @@ class BasicAuth(Auth):
         return user
 
     def current_user(self, request=None) -> Optional[TypeVar('User')]:
-            """
-            Retrieves the User instance for a request.
+        """
+        Retrieves the User instance for a request.
 
-            Args:
-                request: The incoming request.
+        Args:
+            request: The incoming request.
 
-            Returns:
-                User instance if found, otherwise None.
-            """
-            # Get the authorization header from the request
-            authorization_header = self.authorization_header(request)
-            
-            # Extract the base64 part of the authorization header
-            base64_authorization_header = self.extract_base64_authorization_header(authorization_header)
-            
-            # Decode the base64 authorization header
-            decoded_base64_authorization_header = self.decode_base64_authorization_header(base64_authorization_header)
-            
-            # Extract user credentials from the decoded header
-            user_email, user_pwd = self.extract_user_credentials(decoded_base64_authorization_header)
-            
-            # Retrieve the user object from the credentials
-            return self.user_object_from_credentials(user_email, user_pwd)
+        Returns:
+            User instance if found, otherwise None.
+        """
+        # Get the authorization header from the request
+        auth_header = self.auth_header(request)
+
+        # Extract the base64 part of the authorization header
+        base64_auth_header = self.extract_base64_auth_header(
+            auth_header)
+
+        # Decode the base64 authorization header
+        decoded_base64_auth_header = self.decode_base64_auth_header(
+            base64_auth_header)
+
+        # Extract user credentials from the decoded header
+        user_email, user_pwd = self.extract_user_credentials(
+            decoded_base64_auth_header)
+
+        # Retrieve the user object from the credentials
+        return self.user_object_from_credentials(user_email, user_pwd)
