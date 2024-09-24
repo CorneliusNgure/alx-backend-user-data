@@ -4,6 +4,8 @@ Auth class child class module
 """
 from api.v1.auth.auth import Auth
 import base64
+from typing import TypeVar, Optional
+from models.user import User
 
 
 class BasicAuth(Auth):
@@ -68,3 +70,35 @@ class BasicAuth(Auth):
         user_email, password = decoded_base64_authorization_header.split(
                 ':', 1)
         return user_email, password
+
+    def user_object_from_credentials(
+            self, user_email: str, user_pwd: str) -> Optional[
+                    TypeVar('User')]:
+        """
+        Returns a User instance based on their email and password.
+
+        Args:
+            user_email (str): The email of the user.
+            user_pwd (str): The password of the user.
+
+        Returns:
+            User instance if the credentials are valid, otherwise None.
+        """
+        # Check if email and password are valid
+        if not user_email or not isinstance(user_email, str):
+            return None
+        if not user_pwd or not isinstance(user_pwd, str):
+            return None
+
+        # Search for user by email
+        user = User.search({'email': user_email})
+        if not user or len(user) == 0:
+            return None  # No user found
+
+        # User is expected to be in a list, get the first instance
+        user = user[0]
+
+        if not user.is_valid_password(user_pwd):
+            return None
+
+        return user
