@@ -7,6 +7,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 from user import Base, User
 import logging
+from sqlalchemy.exc import NoResultFound, InvalidRequestError
 
 logging.disable(logging.WARNING)
 
@@ -51,5 +52,30 @@ class DB:
         self._session.add(new_user)
         self._session.commit()
 
-        # Return the created User object
         return new_user
+
+    def find_user_by(self, **kwargs) -> User:
+        """Find a user by arbitrary keyword arguments.
+
+        Args:
+            **kwargs: Arbitrary keyword arguments to filter the user query.
+
+        Returns:
+            User: The first User object matching the criteria.
+
+        Raises:
+            NoResultFound: If no user matches the criteria.
+            InvalidRequestError: If invalid query arguments are passed.
+    """
+        valid_attributes = set(User.__table__.columns.keys())
+
+        for key in kwargs.keys():
+            if key not in valid_attributes:
+                raise InvalidRequestError(f"Invalid query argument: {key}")
+
+        user = self._session.query(User).filter_by(**kwargs).first()
+
+        if user is None:
+            raise NoResultFound("No user found matching the criteria.")
+
+        return user
