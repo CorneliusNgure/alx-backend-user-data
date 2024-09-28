@@ -5,7 +5,7 @@ import bcrypt
 from db import DB
 from sqlalchemy.orm.exc import NoResultFound
 from user import User
-import uuid import uuid4
+from uuid import uuid4
 
 
 class Auth:
@@ -77,11 +77,30 @@ class Auth:
         # If password does not match, return False
         return False
 
-    def _generate_uuid() -> str:
+    def _generate_uuid(self) -> str:
         """
         Generate a new UUID and return it as a string.
 
         Returns:
             str: A string representation of a newly generated UUID.
         """
-        return str(uuid.uuid4())
+        return str(uuid4())
+
+    def create_session(self, email: str) -> str:
+        """Create a session for a user by storing their session ID.
+
+        Args:
+            email (str): The user's email.
+
+        Returns:
+            str: The session ID.
+        """
+        try:
+            # Find the user by email
+            user = self._db.find_user_by(email=email)
+        except NoResultFound:
+            return None
+        else:
+            # Generate a new session ID
+            session_id = self._generate_uuid()
+            return session_id
