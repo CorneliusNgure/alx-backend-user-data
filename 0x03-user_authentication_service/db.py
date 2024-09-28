@@ -91,6 +91,9 @@ class DB:
 
         Raises:
             ValueError: If an attribute that doesn't exist.
+        
+        Return:
+            User instance found
         """
         user = self.find_user_by(id=user_id)
 
