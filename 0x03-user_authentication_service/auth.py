@@ -84,4 +84,4 @@ class Auth:
         Returns:
             str: A string representation of a newly generated UUID.
         """
-        return str(uuid.uuid4())
+        return str(uuid4())
