@@ -170,6 +170,34 @@ class Auth:
 
         # Update the user's reset_token in the database
         self._db.update_user(user.id, reset_token=reset_token)
-        
+
         # Return the generated reset token
         return reset_token
+
+    def update_password(self, reset_token: str, password: str) -> None:
+        """
+        Updates the user's password based on the reset token.
+
+        Args:
+        - reset_token: The token used to identify the user (str)
+        - password: The new password (str)
+
+        Returns: None
+
+        Raises:
+        - ValueError if no user is found with the given reset_token
+        """
+        # Find the user by reset_token
+        user = self._db.find_user_by(reset_token=reset_token)
+
+        # If no user is found, raise ValueError
+        if user is None:
+            raise ValueError("Invalid reset token")
+
+        # Hash the new password
+        hashed_password = bcrypt.hashpw(password.encode(
+            'utf-8'), bcrypt.gensalt())
+
+        # Update user's password and reset_token fields
+        self._db.update_user(
+                user.id, hashed_password=hashed_password, reset_token=None)
