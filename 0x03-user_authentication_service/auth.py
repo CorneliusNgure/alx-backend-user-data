@@ -104,3 +104,24 @@ class Auth:
             # Generate a new session ID
             session_id = self._generate_uuid()
             return session_id
+
+    def get_user_from_session_id(
+            self, session_id: Optional[str]) -> Optional[User]:
+        """
+        Retrieve a user by their session_id.
+
+        Args:
+            session_id (str): The session ID to search for.
+
+        Returns:
+            User or None: The user associated with the session_id,
+            or None if not found or session_id is None.
+        """
+        if session_id is None:
+            return None
+
+        try:
+            user = self._db.find_user_by(session_id=session_id)
+            return user
+        except NoResultFound:
+            return None
