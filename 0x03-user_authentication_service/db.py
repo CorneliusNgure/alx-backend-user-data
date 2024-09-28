@@ -87,7 +87,7 @@ class DB:
 
         Raises:
             ValueError: If an attribute that doesn't exist.
-        
+
         Returns:
             User instance found
         """
