@@ -5,6 +5,7 @@ import bcrypt
 from db import DB
 from sqlalchemy.orm.exc import NoResultFound
 from user import User
+from typing import Union
 
 
 class Auth:
@@ -27,7 +28,7 @@ class Auth:
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
         return hashed_password
 
-    def register_user(self, email: str, password: str) -> Union[None, User]:
+    def register_user(self, email: str, password: str) -> User:
         """
         Register a user with an email and password.
 
@@ -42,8 +43,10 @@ class Auth:
             ValueError: If a user with the email already exists.
         """
         try:
+            #check if the user exists
             self._db.find_user_by(email=email)
         except NoResultFound:
+            # hash the password and create a new user if none exists
             hashed_password = self._hash_password(password)
             new_user = self._db.add_user(email, hashed_password)
             return new_user
