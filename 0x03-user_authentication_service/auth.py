@@ -137,9 +137,9 @@ class Auth:
             None
         """
         try:
-            # Find the user by their user_id
             user = self._db.find_user_by(id=user_id)
-            # Set the session_id to None (destroy the session)
-            self._db.update_user(user, session_id=None)
         except NoResultFound:
-            pass
+            return None
+        else:
+            user.session_id = None
+            return None
