@@ -67,18 +67,12 @@ class DB:
             NoResultFound: If no user matches the criteria.
             InvalidRequestError: If invalid query arguments are passed.
         """
-        # Check if all passed kwargs correspond to valid
-        # attributes of the User model
-        for key in kwargs:
-            if not hasattr(User, key):
-                raise InvalidRequestError
+        if not kwargs:
+            raise InvalidRequestError
 
-        # Query the database to find the first user matching the filters
-        user = self._session.query(User).filter_by(**kwargs).one()
-
-        if user is None:
-            raise NoResultFound()
-
+        user = self._session.query(User).filter_by(**kwargs).first()
+        if not user:
+            raise NoResultFound
         return user
 
     def update_user(self, user_id: int, **kwargs) -> None:
