@@ -27,7 +27,7 @@ class Auth:
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
         return hashed_password
 
-    def register_user(self, email: str, password: str) -> User:
+    def register_user(self, email: str, password: str) -> new_user:
         """
         Register a user with an email and password.
 
