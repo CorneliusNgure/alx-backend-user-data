@@ -71,7 +71,7 @@ class DB:
         # attributes of the User model
         for key in kwargs:
             if not hasattr(User, key):
-                raise InvalidRequestError(f"Invalid attribute: {key}")
+                raise InvalidRequestError
 
         # Query the database to find the first user matching the filters
         user = self._session.query(User).filter_by(**kwargs).one()
@@ -87,19 +87,20 @@ class DB:
 
         Args:
             user_id (int): The ID of the user to update.
+
             **kwargs: Keyword args representing the attributes to update.
 
         Raises:
             ValueError: If an attribute that doesn't exist.
         
-        Return:
+        Returns:
             User instance found
         """
         user = self.find_user_by(id=user_id)
 
         for key, value in kwargs.items():
             if not hasattr(user, key):
-                raise ValueError(f"User has no attribute '{key}'")
+                raise ValueError
 
             setattr(user, key, value)
 
