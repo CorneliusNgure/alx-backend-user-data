@@ -1,4 +1,4 @@
-## Tasks
+## Tasks: User Authentication Service
 ### _0. User Model_
 In this task you will create a SQLAlchemy model named `User` for a database table named `users` (by using the mapping declaration of SQLAlchemy).
 
@@ -425,7 +425,7 @@ None
 bob@dylan:~$ 
 ```
 
-### _Log in_
+### _11. Log in_
 In this task, you will implement a `login` function to respond to the `POST /sessions` route.
 
 The request is expected to contain form data with `"email"` and a `"password"` fields.
