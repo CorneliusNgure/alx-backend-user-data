@@ -31,7 +31,7 @@ users.hashed_password: VARCHAR(250)
 users.session_id: VARCHAR(250)
 users.reset_token: VARCHAR(250)
 ```
-###_Create User_
+### _Create User_
 In this task, you will complete the DB class provided below to implement the add_user method.
 ```python
 """DB module
